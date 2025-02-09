@@ -23,14 +23,25 @@ class _HomeScreenState extends State<HomeScreen> {
   final UserController favoriteController = Get.put(UserController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    favoriteController.fetchUsers();
+    Future.delayed(Duration(seconds: 2), () {
+      favoriteController.loadFavorites();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
-      body: Padding(
-        padding: EdgeInsets.only(left: 20, right: 20, top: 60),
-        child: Column(
-          children: [
-            Row(
+      body: Column(
+        children: [
+
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 60),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -48,29 +59,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+          ),
 
-            Obx(() {
+          Expanded(
+            child: Obx(() {
 
               List<User> favoriteUsers = favoriteController.users
                   .where((user) => user.isFavorite.value)
                   .toList();
 
-              if (favoriteUsers.isEmpty) {
+
+              if (favoriteController.favoriteUsers.isEmpty) {
                 return Center(
-                  child: Text("No favorite users yet.", style: TextStyle(color: textHintColor)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                          "No items to show now.",
+                          style: TextStyle(color: textHintColor, fontSize: 16)
+                      ),
+                      Text(
+                          "Please add some favorite items to see here.",
+                          style: TextStyle(color: textHintColor)
+                      )
+                    ],
+                  ),
                 );
               }
 
-              return ListView.builder(
-                itemCount: favoriteUsers.length,
-                itemBuilder: (context, index) {
-                  final user = favoriteUsers[index];
-                  return singleItemCard(user, favoriteController);
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 20),
+                    child: Text(
+                        "Favourite Items",
+                      style: TextStyle(
+                          color: primaryTextColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: favoriteController.favoriteUsers.length,
+                      itemBuilder: (context, index) {
+                        final user = favoriteController.favoriteUsers[index];
+                        return singleItemCard(user, favoriteController);
+                      },
+                    ),
+                  ),
+                ],
               );
             }),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: InkWell(
         onTap: (){

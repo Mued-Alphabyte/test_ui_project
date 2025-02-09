@@ -7,7 +7,7 @@ import '../utils/constants.dart';
 class UserService {
 
   static Future<UserResponse> fetchUsers(int page) async {
-    final response = await http.get(Uri.parse("$baseUrl?page=$page&per_page=8"));
+    final response = await http.get(Uri.parse("$baseUrl?page=$page&per_page=20"));
 
     if (response.statusCode == 200) {
       return UserResponse.fromJson(json.decode(response.body));

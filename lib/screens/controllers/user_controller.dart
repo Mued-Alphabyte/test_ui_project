@@ -60,10 +60,16 @@ class UserController extends GetxController{
 
     List<String> favoriteIds = filteredUsers
         .where((user) => user.isFavorite.value)
-        .map((user) => user.id.toString())
+        .map((user) => user.email.toString())
         .toList();
 
+    print("ids: "+favoriteIds.toString());
+
     await prefs.setStringList('favorite_users', favoriteIds);
+
+
+    // Update favoriteUsers list immediately
+    favoriteUsers.assignAll(users.where((user) => user.isFavorite.value));
 
   }
 
@@ -72,15 +78,22 @@ class UserController extends GetxController{
 
   Future<void> loadFavorites() async {
 
+    fetchUsers();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? favoriteIds = prefs.getStringList('favorite_users');
 
+    print("ids: $favoriteIds");
+    print("ids: $users");
+
     if (favoriteIds != null) {
 
-      for (var user in filteredUsers) {
-        if (favoriteIds.contains(user.id.toString())) {  // Compare as strings
+      for (var user in users) {
+        if (favoriteIds.contains(user.email.toString())) {
           user.isFavorite.value = true;
+          print("user :${user.email}");
         }
+        favoriteUsers.assignAll(users.where((user) => user.isFavorite.value));
       }
 
     }
@@ -104,6 +117,8 @@ class UserController extends GetxController{
     } catch (e) {
       print("Error fetching users: $e");
     }
+
+    print("USER :"+users.value.first.email);
     isLoading(false);
   }
 
