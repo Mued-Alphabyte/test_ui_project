@@ -1,16 +1,11 @@
 # flutter_example
-
-A new Flutter project.
+test project
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. flutter sdk version sdk: ^3.6.2
+2. getx for state management
+3. http for network request
+4. used shared preference to save the favorite item.
+5. used pagination to data fetching optimization.
+6. data drivinen pattern for separating the business logic with ui.
+7. local search added
