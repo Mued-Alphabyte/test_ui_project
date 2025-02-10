@@ -1,4 +1,6 @@
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../api_handler/api_call.dart';
@@ -116,9 +118,17 @@ class UserController extends GetxController{
       }
     } catch (e) {
       print("Error fetching users: $e");
+      Fluttertoast.showToast(
+          msg: "error in $e",
+          toastLength: Toast.LENGTH_LONG, // Duration for which the toast will be visible
+          gravity: ToastGravity.BOTTOM, // Position of the toast on the screen
+          backgroundColor: Colors.black, // Background color of the toast
+          textColor: Colors.white, // Text color of the toast message
+          fontSize: 16.0 // Font size of the toast message
+      );
     }
 
-    print("USER :"+users.value.first.email);
+    //print("USER :"+users.value.first.email);
     isLoading(false);
   }
 
